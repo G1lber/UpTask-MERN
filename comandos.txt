@@ -1,4 +1,6 @@
 npm i mongoose //este se installa afuera de la de la carpeta backend
 npm i -D nodemon
 npm i express
+npm i bcrypt
+npm i jsonwebtoken
 url:mongodb+srv://G1lber:root@cluster0.uvafr5r.mongodb.net/uptask?retryWrites=true&w=majority&appName=Cluster0
