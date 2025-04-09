@@ -7,7 +7,7 @@ import {
     eliminarProyecto,
     agregarColaborador,
     eliminarColaborador,
-    obtenerTareas,
+    // obtenerTareas,
 } from '../controllers/proyectoController.js'
 import checkAuth from '../middleware/checkAuth.js'
 
@@ -27,7 +27,7 @@ router
     .put(checkAuth, editarProyecto)
     .delete(checkAuth, eliminarProyecto)
 
-router.get('/tareas/:id', checkAuth, obtenerTareas)
+// router.get('/tareas/:id', checkAuth, obtenerTareas)
 router.post('/agregar-colaborador/:id', checkAuth, agregarColaborador)
 router.post('/eliminar-colaborador/:id', checkAuth, eliminarColaborador)
 
