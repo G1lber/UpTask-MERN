@@ -3,4 +3,5 @@ npm i -D nodemon
 npm i express
 npm i bcrypt
 npm i jsonwebtoken
+npm i cors
 url:mongodb+srv://G1lber:root@cluster0.uvafr5r.mongodb.net/uptask?retryWrites=true&w=majority&appName=Cluster0
