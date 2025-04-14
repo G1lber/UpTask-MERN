@@ -15,6 +15,7 @@ const ConfirmarCuenta = () => {
   useEffect(() =>{
     const confirmarCuenta = async () =>{
       try {
+        //TODO: Mover hacia un cliente Axios
         console.log(id)
         const url = `http://localhost:4000/api/usuarios/confirmar/${id}`
         const {data} = await axios(url)

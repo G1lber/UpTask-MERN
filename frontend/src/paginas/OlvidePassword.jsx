@@ -2,6 +2,7 @@ import { set } from "mongoose"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import Alerta from "../components/Alerta"
+import axios from "axios"
 const OlvidePassword = () => {
 
     const [email, setEmail] = useState('')
@@ -15,6 +16,19 @@ const OlvidePassword = () => {
                 error: true
             })
             return
+        }
+        try {
+            //TODO: Mover hacia un cliente Axios
+            const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password`,{email})
+            setAlerta({
+                msg: data.msg,
+                error: false
+            })
+        } catch (error) {
+            setAlerta({
+                msg: error.response.data.msg,
+                error:true
+            })
         }
     }
     const {msg} = alerta
