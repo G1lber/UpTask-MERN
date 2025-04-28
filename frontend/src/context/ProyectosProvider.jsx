@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, Children } from "react";
 import clienteAxios from "../config/clienteAxios";
 import { useNavigate } from "react-router-dom";
+import EditarProyecto from "../paginas/EditarProyecto";
 
 const ProyectosContext = createContext()
 
@@ -33,7 +34,7 @@ const ProyectosProvider = ({children}) => {
             }
         }
         obtenerProyectos()
-    })
+    }, [])
 
     const mostrarAlerta = alerta =>{
         setAlerta(alerta)
@@ -42,10 +43,34 @@ const ProyectosProvider = ({children}) => {
         },5000)
     }
     const submitProyecto = async proyecto =>{
-        // console.log(proyecto)
+        if (proyecto.id) {
+            editarProyecto(proyecto)
+        } else {
+            nuevoProyecto(proyecto)
+        }
+        return
         // if (proyecto.id) {
             
         // }
+        
+    }
+    const editarProyecto = async proyecto =>{
+        try {
+            const token = localStorage.getItem('token')
+            if (!token) return
+
+            const config = {
+                headers:{
+                    "Content-Type":"application/json", Authorization:`Bearer ${token}`
+                }
+            }
+            const {data} = await clienteAxios.put(`/proyectos/${proyecto.id}`,proyecto,config)
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const nuevoProyecto = async proyecto =>{
         try {
             const token = localStorage.getItem('token')
             if (!token) return
