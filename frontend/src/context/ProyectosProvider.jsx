@@ -171,7 +171,6 @@ const ProyectosProvider = ({children}) => {
                 }
             }
             const {data} = await clienteAxios.post('/tareas', tarea, config)
-            console.log(data)
 
             //Agregar la tarea al state
             const proyectoActulizado = {...proyecto}

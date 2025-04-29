@@ -17,7 +17,7 @@ const ModalFormularioTarea = () => {
     
     const {modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea} = useProyectos() 
 
-    const handleSubmit = e=>{
+    const handleSubmit = async e=>{
         e.preventDefault()
 
         if ([nombre, descripcion,fechaEntrega, prioridad].includes('')) {
@@ -28,7 +28,12 @@ const ModalFormularioTarea = () => {
             returns
         }
 
-        submitTarea({nombre,descripcion,fechaEntrega,prioridad, proyecto: params.id})
+        await submitTarea({nombre,descripcion,fechaEntrega,prioridad, proyecto: params.id})
+
+        SetNombre('')
+        SetDescripcion('')
+        SetFechaEntrega('')
+        SetPrioridad('')
     }
     const {msg}= alerta
   return (
