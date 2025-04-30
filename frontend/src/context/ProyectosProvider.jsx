@@ -10,10 +10,11 @@ const ProyectosProvider = ({children}) => {
     const [proyectos, setProyectos] = useState([])
     const [alerta, setAlerta] = useState([])
     const [proyecto, setProyecto] = useState({})
-    const [cargando, setcargando] = useState(false)
+    const [cargando, setCargando] = useState(false)
     const [modalFormularioTarea, setModalFormularioTarea ] = useState(false)
     const [tarea, setTarea] = useState({})
     const [modalEliminarTarea, setModalEliminarTarea] = useState(false)
+    const [colaborador, setColaborador] = useState({})
 
     const navigate = useNavigate()
 
@@ -111,7 +112,7 @@ const ProyectosProvider = ({children}) => {
         }
     }
     const obtenerProyecto = async id => {
-        setcargando(true)
+        setCargando(true)
         try {
             const token = localStorage.getItem('token')
             if (!token) return
@@ -127,7 +128,7 @@ const ProyectosProvider = ({children}) => {
         } catch (error) {
             console.log(error)
         }finally{
-            setcargando(false)
+            setCargando(false)
         }
     }
 
@@ -237,7 +238,7 @@ const ProyectosProvider = ({children}) => {
                     Authorization:`Bearer ${token}`
                 }
             }
-            const {data} = await clienteAxios.delete(`/tareas/${tarea._id}`,  config)
+            const {data} = await clienteAxios.delete(`/tareas/${tarea._id}`, config)
 
             setAlerta({
                 msg:data.msg,
@@ -259,6 +260,35 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
+
+    const submitColaborador = async email =>{
+        setCargando(true)
+        try {
+            const token = localStorage.getItem('token')
+            if (!token) return
+
+            const config = {
+                headers:{
+                    "Content-Type":"application/json", 
+                    Authorization:`Bearer ${token}`
+                }
+            }
+            const {data} = await clienteAxios.post('/proyectos/colaboradores',{email}, config)
+            
+            setColaborador(data)
+            setAlerta({})
+        } catch (error) {
+            setAlerta({
+                msg:error.response.data.msg,
+                error:true
+            })
+        }finally{
+            setCargando(false)
+        }
+    }
+    const agragarColaborador = async email =>{
+        console.log(email)
+    }
     return(
         <ProyectosContext.Provider
             value={{
@@ -277,7 +307,10 @@ const ProyectosProvider = ({children}) => {
                 tarea,
                 modalEliminarTarea,
                 handleModalEliminarTarea,
-                eliminarTarea
+                eliminarTarea,
+                submitColaborador,
+                colaborador,
+                agragarColaborador
             }}
         >{children}
         </ProyectosContext.Provider>

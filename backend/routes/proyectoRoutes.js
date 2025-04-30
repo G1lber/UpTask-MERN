@@ -5,6 +5,7 @@ import {
     obtenerProyectos,
     editarProyecto,
     eliminarProyecto,
+    buscarColaborador,
     agregarColaborador,
     eliminarColaborador,
     // obtenerTareas,
@@ -12,9 +13,6 @@ import {
 import checkAuth from '../middleware/checkAuth.js'
 
 const router = express.Router()
-
-// router.get('/', checkAuth, obtenerProyecto)
-// router.post('/', checkAuth, nuevoProyecto)
 
 router
     .route('/')
@@ -27,8 +25,8 @@ router
     .put(checkAuth, editarProyecto)
     .delete(checkAuth, eliminarProyecto)
 
-// router.get('/tareas/:id', checkAuth, obtenerTareas)
-router.post('/agregar-colaborador/:id', checkAuth, agregarColaborador)
-router.post('/eliminar-colaborador/:id', checkAuth, eliminarColaborador)
+router.post('/colaboradores', checkAuth, buscarColaborador)
+router.post('/colaboradores/:id', checkAuth, agregarColaborador)
+router.delete('/colaboradores/:id', checkAuth, eliminarColaborador)
 
 export default router
