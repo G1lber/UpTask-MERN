@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useProyectos from '../hooks/useProyectos'
 import Alerta from './Alerta'
@@ -8,14 +8,32 @@ import Proyecto from '../paginas/Proyecto'
 const PRIORIDAD = ['Baja', 'Media', 'Alta']
 
 const ModalFormularioTarea = () => {
-    const [nombre, SetNombre ] = useState('')
-    const [descripcion, SetDescripcion ] = useState('')
-    const [fechaEntrega, SetFechaEntrega ] = useState('')
-    const [prioridad, SetPrioridad ] = useState('')
+
+    const [id, setId ] = useState('')
+    const [nombre, setNombre ] = useState('')
+    const [descripcion, setDescripcion ] = useState('')
+    const [fechaEntrega, setFechaEntrega ] = useState('')
+    const [prioridad, setPrioridad ] = useState('')
 
     const params = useParams()
     
-    const {modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea} = useProyectos() 
+    const {modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea,tarea} = useProyectos() 
+
+    useEffect(() =>{
+      if(tarea?._id){
+         setId(tarea._id)
+         setNombre(tarea.nombre)
+         setDescripcion(tarea.descripcion)
+         setFechaEntrega(tarea.fechaEntrega?.split('T')[0])
+         setPrioridad(tarea.prioridad)
+        return
+      }
+      setId('')
+      setNombre('')
+      setDescripcion('')
+      setFechaEntrega('')
+      setPrioridad('')
+    },[tarea])
 
     const handleSubmit = async e=>{
         e.preventDefault()
@@ -28,12 +46,13 @@ const ModalFormularioTarea = () => {
             returns
         }
 
-        await submitTarea({nombre,descripcion,fechaEntrega,prioridad, proyecto: params.id})
-
-        SetNombre('')
-        SetDescripcion('')
-        SetFechaEntrega('')
-        SetPrioridad('')
+        await submitTarea({ id,nombre,descripcion,fechaEntrega,prioridad, proyecto: params.id})
+        
+        setId('')
+        setNombre('')
+        setDescripcion('')
+        setFechaEntrega('')
+        setPrioridad('')
     }
     const {msg}= alerta
   return (
@@ -93,7 +112,7 @@ const ModalFormularioTarea = () => {
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-gray-900">
-                      Crear Tarea
+                      {id ? 'Editar Tarea' : 'Crear Tarea' }
                     </Dialog.Title>
                     {msg && <Alerta alerta={alerta}/>}
                       <form 
@@ -113,7 +132,7 @@ const ModalFormularioTarea = () => {
                                 placeholder='Nombre de la tarea'
                                 className='border-2 w-full p-2 placeholder-gray-400 rounded-md'
                                 value={nombre}
-                                onChange={e=> SetNombre(e.target.value)}
+                                onChange={e=> setNombre(e.target.value)}
                                 />
                         </div>
                         <div className='mb-5'>
@@ -128,7 +147,7 @@ const ModalFormularioTarea = () => {
                                 placeholder='Descripción de la tarea'
                                 className='border-2 w-full p-2 placeholder-gray-400 rounded-md'
                                 value={descripcion}
-                                onChange={e=> SetDescripcion(e.target.value)}
+                                onChange={e=> setDescripcion(e.target.value)}
                                 />
                         </div>
                         <div className='mb-5'>
@@ -143,7 +162,7 @@ const ModalFormularioTarea = () => {
                                 id="fecha-entrega" 
                                 className='border-2 w-full p-2 placeholder-gray-400 rounded-md'
                                 value={fechaEntrega}
-                                onChange={e=> SetFechaEntrega(e.target.value)}
+                                onChange={e=> setFechaEntrega(e.target.value)}
                                 />
                         </div>
                         <div className='mb-5'>
@@ -157,7 +176,7 @@ const ModalFormularioTarea = () => {
                                 id="Prioridad" 
                                 className='border-2 w-full p-2 placeholder-gray-400 rounded-md'
                                 value={prioridad}
-                                onChange={e=> SetPrioridad(e.target.value)}
+                                onChange={e=> setPrioridad(e.target.value)}
                             >
                                 <option value=''>-- Seleccionar --</option>
                                 {PRIORIDAD.map(opcion=>(
@@ -168,7 +187,7 @@ const ModalFormularioTarea = () => {
                         <input 
                             type="submit" 
                             className='bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase text-sm font-bold cursor-pointer transition-colors rounded' id="" 
-                            value='Crear Tarea'
+                            value={id ? 'Guardar Cambios' : 'Crear Tarea' }
                             />
                         
                       </form>
