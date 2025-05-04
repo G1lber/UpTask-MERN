@@ -2,11 +2,11 @@ import { useEffect } from "react"
 import FormularioColaborador from "../components/FormularioColaborador"
 import useProyectos from "../hooks/useProyectos"
 import { useParams } from "react-router-dom"
-import { agregarColaborador } from "../../../backend/controllers/proyectoController"
+
 
 const NuevoColaborador = () => {
 
-    const {obtenerProyecto, proyecto, cargando, colaborador,agragarColaborador}=useProyectos()
+    const {obtenerProyecto, proyecto, cargando, colaborador,agregarColaborador}=useProyectos()
     const params = useParams()
     useEffect(() =>{
         obtenerProyecto(params.id)
